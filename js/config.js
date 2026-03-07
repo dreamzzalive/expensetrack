@@ -39,7 +39,7 @@ const EMOJIS = {
   Others: "📦",
   Travel: "✈️",
   Education: "📚",
-  Fitness: "🏋️",
+  Groceries: "🛒",
 };
 const DEFAULT_CATEGORIES = [
   "Food",
