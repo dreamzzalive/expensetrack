@@ -17,11 +17,21 @@
     <span id="dash-month-label"></span>
     <button onclick="changeMonth(1)" class="icon-btn">&#8250;</button>
   </div>
-  <div class="summary-card">
-    <div class="label">Total Spent</div>
-    <div class="amount" id="dash-total">$0.00</div>
-    <div class="sub" id="dash-sub">0 transactions this month</div>
+  <div class="summary-cards-row">
+    <div class="summary-card summary-card-exp">
+      <div class="label">Expenses</div>
+      <div class="amount" id="dash-total-exp">$0.00</div>
+    </div>
+    <div class="summary-card summary-card-inc">
+      <div class="label">Income</div>
+      <div class="amount" id="dash-total-inc">$0.00</div>
+    </div>
   </div>
+  <div class="net-bar">
+    <span class="net-label">Net Savings</span>
+    <span id="dash-net" class="net-amt">$0.00</span>
+  </div>
+  <p id="dash-sub" style="font-size:12px;color:var(--muted);margin:0 16px 4px;"></p>
 
   <div class="section-title">Category Breakdown</div>
   <div class="bar-chart-card" id="bar-chart-card"></div>
@@ -33,7 +43,12 @@
   <div class="section-title">By Account</div>
   <div class="cat-summary-list" id="acc-summary-list"></div>
 
-  <div class="section-title">Recent Transactions</div>
+  <div class="section-title">Income Breakdown</div>
+  <div class="bar-chart-card" id="inc-chart-card"></div>
+  <div class="section-title">By Income Source</div>
+  <div class="cat-summary-list" id="inc-summary-list"></div>
+
+  <div class="section-title">Recent Activity</div>
   <div class="recent-list" id="recent-list"></div>
 </div>
 
@@ -61,10 +76,29 @@
   <div class="recent-list" id="acc-page-list"></div>
 </div>
 
+<!-- INCOME DETAIL PAGE -->
+<div id="page-income" class="page">
+  <div class="header" style="display:flex;align-items:center;gap:12px;">
+    <button onclick="showPage('dashboard')" class="back-btn">&#8592;</button>
+    <div><h1 id="inc-page-title">Income</h1><p id="inc-page-sub"></p></div>
+  </div>
+  <div style="padding:16px 16px 0;"><div class="summary-card" id="inc-page-summary-card"></div></div>
+  <div class="section-title">Records</div>
+  <div class="recent-list" id="inc-page-list"></div>
+</div>
+
 <!-- ADD EXPENSE -->
 <div id="page-add" class="page">
-  <div class="header"><h1>Add Expense</h1><p>Log a new transaction</p></div>
-  <div class="add-form">
+  <div class="header"><h1>Add Transaction</h1><p>Log expense or income</p></div>
+  <div style="margin:16px 16px 0;">
+    <div class="add-tabs">
+      <button class="add-tab active" onclick="switchAddTab('expense',this)">💸 Expense</button>
+      <button class="add-tab" onclick="switchAddTab('income',this)">💰 Income</button>
+    </div>
+  </div>
+
+  <!-- EXPENSE FORM -->
+  <div id="add-expense-form" class="add-form">
     <div class="form-group">
       <label>Amount</label>
       <div class="amount-input-wrap">
@@ -86,6 +120,31 @@
       <textarea id="inp-notes" placeholder="Any extra details..."></textarea>
     </div>
     <button class="btn-primary" onclick="addExpense()">Add Expense</button>
+  </div>
+
+  <!-- INCOME FORM -->
+  <div id="add-income-form" class="add-form" style="display:none;">
+    <div class="form-group">
+      <label>Amount</label>
+      <div class="amount-input-wrap">
+        <span class="currency">$</span>
+        <input type="number" id="inc-amount" placeholder="0.00" min="0" step="0.01" inputmode="decimal"/>
+      </div>
+    </div>
+    <div class="date-row">
+      <div class="form-group"><label>Category</label><select id="inc-cat"></select></div>
+      <div class="form-group"><label>Date</label><input type="date" id="inc-date"/></div>
+    </div>
+    <div class="form-group"><label>Received Into</label><select id="inc-account"></select></div>
+    <div class="form-group">
+      <label>Description <span class="opt-label">(optional)</span></label>
+      <input type="text" id="inc-desc" placeholder="e.g. March salary"/>
+    </div>
+    <div class="form-group">
+      <label>Notes <span class="opt-label">(optional)</span></label>
+      <textarea id="inc-notes" placeholder="Any extra details..."></textarea>
+    </div>
+    <button class="btn-primary" style="background:#10b981;" onclick="addIncome()">Add Income</button>
   </div>
 </div>
 
@@ -122,9 +181,15 @@
       <div class="donut-svg-wrap" id="donut-acc-svg-wrap"></div>
       <div class="legend-list" id="donut-acc-legend"></div>
     </div>
+    <div class="donut-wrap">
+      <h3>Income by Source</h3>
+      <div class="donut-svg-wrap" id="donut-inc-svg-wrap"></div>
+      <div class="legend-list" id="donut-inc-legend"></div>
+    </div>
     <div class="trend-card">
       <h3 id="trend-title">Monthly Trend</h3>
       <div class="trend-bars" id="trend-bars"></div>
+      <div id="trend-legend" style="display:flex;gap:16px;margin-top:10px;"></div>
     </div>
   </div>
 </div>
@@ -143,6 +208,11 @@
       <div class="settings-section-title">Accounts / Cards</div>
       <div class="tag-list" id="acc-tags"></div>
       <div class="tag-add-row"><input type="text" id="new-acc-input" placeholder="New account..."/><button onclick="addAccount()">Add</button></div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">Income Categories</div>
+      <div class="tag-list" id="inc-cat-tags"></div>
+      <div class="tag-add-row"><input type="text" id="new-inc-cat-input" placeholder="New income category..."/><button onclick="addIncomeCategory()">Add</button></div>
     </div>
     <div class="settings-section">
       <div class="settings-section-title">Import CSV</div>
@@ -249,6 +319,7 @@
 <script src="js/ui.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/categoryDetail.js"></script>
+<script src="js/incomeDetail.js"></script>
 <script src="js/accountDetail.js"></script>
 <script src="js/addExpense.js"></script>
 <script src="js/calendar.js"></script>
