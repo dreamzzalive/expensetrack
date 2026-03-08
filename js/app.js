@@ -1,5 +1,1 @@
-// Entry point
-(function () {
-  initFirebase();
-  renderDashboard();
-})();
+(function(){initFirebase();renderDashboard();})();

@@ -21,14 +21,29 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .summary-card .amount{font-size:34px;font-weight:700;margin:6px 0 4px;}
 .summary-card .sub{font-size:13px;opacity:.85;}
 .section-title{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:20px 16px 10px;}
+
+/* BAR CHART CARD */
+.bar-chart-card{margin:0 16px;background:var(--card);border-radius:var(--radius);padding:16px 16px 12px;box-shadow:var(--shadow);}
+.bc-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.bc-label{font-size:12px;font-weight:600;width:82px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text);}
+.bc-track{flex:1;background:var(--border);border-radius:99px;height:10px;overflow:hidden;}
+.bc-fill{height:10px;border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.bc-amt{font-size:12px;font-weight:700;width:58px;text-align:right;flex-shrink:0;}
+
+/* CATEGORY BARS (clickable) */
 .cat-summary-list{margin:0 16px;display:flex;flex-direction:column;gap:10px;}
-.cat-bar-item{background:var(--card);border-radius:var(--radius-sm);padding:12px 14px;box-shadow:var(--shadow);}
+.cat-bar-item{background:var(--card);border-radius:var(--radius-sm);padding:12px 14px;box-shadow:var(--shadow);cursor:pointer;transition:transform .15s,box-shadow .15s;}
+.cat-bar-item:active{transform:scale(.98);box-shadow:none;}
 .cat-bar-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
 .cat-bar-name{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;}
 .cat-dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
 .cat-bar-amt{font-size:14px;font-weight:700;}
+.cat-bar-meta{font-size:11px;color:var(--muted);margin-top:4px;}
 .bar-track{background:var(--border);border-radius:99px;height:6px;}
 .bar-fill{height:6px;border-radius:99px;transition:width .4s;}
+.cat-chevron{color:var(--muted);font-size:16px;margin-left:4px;}
+
+/* TX CARDS */
 .recent-list,.cal-tx-list{margin:0 16px;display:flex;flex-direction:column;gap:8px;}
 .tx-item{background:var(--card);border-radius:var(--radius-sm);padding:12px 14px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;}
 .tx-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
@@ -39,11 +54,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .tx-amt{font-size:15px;font-weight:700;color:var(--danger);}
 .tx-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;padding:0 0 0 8px;flex-shrink:0;}
 .tx-del:hover{color:var(--danger);}
+
+/* ADD FORM */
 .add-form{margin:16px;background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);}
 .form-group{margin-bottom:16px;}
 .form-group label{display:block;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
 .form-group input,.form-group select,.form-group textarea{width:100%;padding:13px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:15px;background:var(--bg);color:var(--text);outline:none;transition:border .2s;-webkit-appearance:none;appearance:none;}
-.form-group input:focus,.form-group select:focus{border-color:var(--primary);background:var(--card);}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--primary);background:var(--card);}
 .form-group textarea{resize:none;height:70px;font-family:inherit;}
 .amount-input-wrap{position:relative;}
 .amount-input-wrap .currency{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;font-weight:700;color:var(--muted);}
@@ -52,6 +69,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .btn-primary:active{opacity:.85;}
 .date-row{display:flex;gap:10px;}
 .date-row .form-group{flex:1;}
+
+/* CALENDAR */
 .cal-wrap{margin:16px;}
 .cal-header{display:flex;justify-content:space-between;align-items:center;background:var(--card);border-radius:var(--radius);padding:14px 18px;box-shadow:var(--shadow);margin-bottom:12px;}
 .cal-header span{font-weight:700;font-size:16px;}
@@ -66,6 +85,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .cal-day.selected.has-tx::after{background:white;}
 .cal-day.empty{cursor:default;}
 .cal-date-label{font-size:13px;font-weight:700;color:var(--muted);margin:12px 0 6px;}
+
+/* ANALYTICS */
 .analytics-wrap{padding:16px;}
 .period-tabs{display:flex;background:var(--card);border-radius:var(--radius-sm);padding:4px;box-shadow:var(--shadow);margin-bottom:16px;}
 .period-tab{flex:1;text-align:center;padding:9px;font-size:13px;font-weight:600;border-radius:8px;cursor:pointer;color:var(--muted);border:none;background:none;transition:all .2s;}
@@ -83,6 +104,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .trend-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
 .trend-bar-fill{width:100%;border-radius:4px 4px 0 0;background:var(--primary);min-height:4px;transition:height .4s;}
 .trend-bar-label{font-size:10px;color:var(--muted);}
+
+/* SETTINGS */
 .settings-wrap{padding:16px;}
 .settings-section{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;}
 .settings-section-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding:14px 16px 8px;}

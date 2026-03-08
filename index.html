@@ -21,10 +21,30 @@
     <div class="amount" id="dash-total">$0.00</div>
     <div class="sub" id="dash-sub">0 transactions this month</div>
   </div>
+  <!-- BAR CHART -->
+  <div class="section-title">Category Breakdown</div>
+  <div class="bar-chart-card" id="bar-chart-card"></div>
+  <!-- CATEGORY LIST (clickable) -->
   <div class="section-title">By Category</div>
   <div class="cat-summary-list" id="cat-summary-list"></div>
   <div class="section-title">Recent Transactions</div>
   <div class="recent-list" id="recent-list"></div>
+</div>
+
+<!-- CATEGORY DRILL-DOWN PAGE -->
+<div id="page-category" class="page">
+  <div class="header" style="display:flex;align-items:center;gap:12px;">
+    <button onclick="showPage('dashboard')" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--primary);">&#8592;</button>
+    <div>
+      <h1 id="cat-page-title">Category</h1>
+      <p id="cat-page-sub"></p>
+    </div>
+  </div>
+  <div style="padding:16px 16px 0;">
+    <div class="summary-card" id="cat-page-summary-card"></div>
+  </div>
+  <div class="section-title">Transactions</div>
+  <div class="recent-list" id="cat-page-list" style="margin:0 16px;"></div>
 </div>
 
 <div id="page-add" class="page">
@@ -41,9 +61,15 @@
       <div class="form-group"><label>Category</label><select id="inp-cat"></select></div>
       <div class="form-group"><label>Date</label><input type="date" id="inp-date"/></div>
     </div>
-    <div class="form-group"><label>Description</label><input type="text" id="inp-desc" placeholder="What did you spend on?"/></div>
     <div class="form-group"><label>Account / Card</label><select id="inp-account"></select></div>
-    <div class="form-group"><label>Notes (optional)</label><textarea id="inp-notes" placeholder="Any extra details..."></textarea></div>
+    <div class="form-group">
+      <label>Description <span style="font-weight:400;color:var(--muted);font-size:11px;">(optional)</span></label>
+      <input type="text" id="inp-desc" placeholder="What did you spend on?"/>
+    </div>
+    <div class="form-group">
+      <label>Notes <span style="font-weight:400;color:var(--muted);font-size:11px;">(optional)</span></label>
+      <textarea id="inp-notes" placeholder="Any extra details..."></textarea>
+    </div>
     <button class="btn-primary" onclick="addExpense()">Add Expense</button>
   </div>
 </div>
@@ -169,6 +195,7 @@
 <script src="js/firebase.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/dashboard.js"></script>
+<script src="js/categoryDetail.js"></script>
 <script src="js/addExpense.js"></script>
 <script src="js/calendar.js"></script>
 <script src="js/analytics.js"></script>
