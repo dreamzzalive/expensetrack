@@ -18,3 +18,5 @@ function getAccColor(acc){ return ACC_COLORS[(state.accounts||[]).indexOf(acc)%A
 function getAccEmoji(acc){ return ACC_EMOJIS[acc]||'💳'; }
 function getIncColor(cat){ return INC_COLORS[(state.incomeCategories||DEFAULT_INCOME_CATEGORIES).indexOf(cat)%INC_COLORS.length]; }
 function getIncEmoji(cat){ return INC_EMOJIS[cat]||'💰'; }
+
+const TRANSFER_EMOJI = '🔄';

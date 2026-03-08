@@ -10,7 +10,7 @@
 
 <!-- DASHBOARD -->
 <div id="page-dashboard" class="page active">
-  <div class="header"><h1>ExpenseTrack</h1><p id="dash-date"></p></div>
+  <div class="header" style="display:flex;justify-content:space-between;align-items:center;"><div><h1>ExpenseTrack</h1><p id="dash-date"></p></div><button onclick="openTransferModal()" class="transfer-fab">🔄 Transfer</button></div>
   <div id="sync-banner-wrap"></div>
   <div class="month-nav-row">
     <button onclick="changeMonth(-1)" class="icon-btn">&#8249;</button>
@@ -72,7 +72,9 @@
   <div style="padding:16px 16px 0;"><div class="summary-card" id="acc-page-summary-card"></div></div>
   <div class="section-title">Category Split</div>
   <div class="bar-chart-card" id="acc-page-cat-chart"></div>
-  <div class="section-title">Transactions</div>
+  <div class="section-title">Transfer History</div>
+  <div class="recent-list" id="acc-page-transfers"></div>
+  <div class="section-title">Expense Transactions</div>
   <div class="recent-list" id="acc-page-list"></div>
 </div>
 
@@ -311,6 +313,34 @@
   </div>
 </div>
 
+
+<!-- TRANSFER MODAL -->
+<div class="modal-overlay" id="transfer-modal">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" onclick="closeTransferModal()">×</button>
+    <h2>🔄 Transfer Money</h2>
+    <p>Move funds between accounts or pay a credit card</p>
+    <div class="form-group">
+      <label>Amount</label>
+      <div class="amount-input-wrap">
+        <span class="currency">$</span>
+        <input type="number" id="tr-amount" placeholder="0.00" min="0" step="0.01" inputmode="decimal"/>
+      </div>
+    </div>
+    <div class="date-row">
+      <div class="form-group"><label>From Account</label><select id="tr-from"></select></div>
+      <div class="form-group"><label>To Account</label><select id="tr-to"></select></div>
+    </div>
+    <div class="form-group"><label>Date</label><input type="date" id="tr-date"/></div>
+    <div class="form-group">
+      <label>Description <span class="opt-label">(optional)</span></label>
+      <input type="text" id="tr-desc" placeholder="e.g. OCBC card payment"/>
+    </div>
+    <div class="modal-err" id="tr-modal-err"></div>
+    <button class="btn-primary" style="background:#0ea5e9;" onclick="submitTransfer()">Confirm Transfer</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="js/config.js"></script>
@@ -320,6 +350,7 @@
 <script src="js/dashboard.js"></script>
 <script src="js/categoryDetail.js"></script>
 <script src="js/incomeDetail.js"></script>
+<script src="js/transfers.js"></script>
 <script src="js/accountDetail.js"></script>
 <script src="js/addExpense.js"></script>
 <script src="js/calendar.js"></script>
