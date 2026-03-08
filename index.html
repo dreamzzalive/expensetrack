@@ -69,8 +69,10 @@
     <button onclick="showPage('dashboard')" class="back-btn">&#8592;</button>
     <div><h1 id="acc-page-title">Account</h1><p id="acc-page-sub"></p></div>
   </div>
-  <div style="padding:16px 16px 0;"><div class="summary-card" id="acc-page-summary-card"></div></div>
-  <div class="section-title">Category Split</div>
+  <div style="padding:16px 16px 0;">
+    <div class="summary-card" id="acc-page-summary-card"></div>
+  </div>
+  <div class="section-title">Category Breakdown</div>
   <div class="bar-chart-card" id="acc-page-cat-chart"></div>
   <div class="section-title">Transfer History</div>
   <div class="recent-list" id="acc-page-transfers"></div>
@@ -105,7 +107,7 @@
       <label>Amount</label>
       <div class="amount-input-wrap">
         <span class="currency">$</span>
-        <input type="number" id="inp-amount" placeholder="0.00" min="0" step="0.01" inputmode="decimal"/>
+        <input type="number" id="inp-amount" style="padding-left:32px" placeholder="0.00" min="0" step="0.01" inputmode="decimal"/>
       </div>
     </div>
     <div class="date-row">
@@ -130,7 +132,7 @@
       <label>Amount</label>
       <div class="amount-input-wrap">
         <span class="currency">$</span>
-        <input type="number" id="inc-amount" placeholder="0.00" min="0" step="0.01" inputmode="decimal"/>
+        <input type="number" id="inc-amount" style="padding-left:32px" placeholder="0.00" min="0" step="0.01" inputmode="decimal"/>
       </div>
     </div>
     <div class="date-row">
@@ -324,7 +326,7 @@
       <label>Amount</label>
       <div class="amount-input-wrap">
         <span class="currency">$</span>
-        <input type="number" id="tr-amount" placeholder="0.00" min="0" step="0.01" inputmode="decimal"/>
+        <input type="number" id="tr-amount" style="padding-left:32px" placeholder="0.00" min="0" step="0.01" inputmode="decimal"/>
       </div>
     </div>
     <div class="date-row">
