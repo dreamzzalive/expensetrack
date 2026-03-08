@@ -8,12 +8,13 @@
 </head>
 <body>
 
+<!-- DASHBOARD -->
 <div id="page-dashboard" class="page active">
   <div class="header"><h1>ExpenseTrack</h1><p id="dash-date"></p></div>
   <div id="sync-banner-wrap"></div>
-  <div style="margin:16px 16px 10px;display:flex;justify-content:space-between;align-items:center;">
+  <div class="month-nav-row">
     <button onclick="changeMonth(-1)" class="icon-btn">&#8249;</button>
-    <span id="dash-month-label" style="font-weight:700;font-size:15px;"></span>
+    <span id="dash-month-label"></span>
     <button onclick="changeMonth(1)" class="icon-btn">&#8250;</button>
   </div>
   <div class="summary-card">
@@ -21,32 +22,48 @@
     <div class="amount" id="dash-total">$0.00</div>
     <div class="sub" id="dash-sub">0 transactions this month</div>
   </div>
-  <!-- BAR CHART -->
+
   <div class="section-title">Category Breakdown</div>
   <div class="bar-chart-card" id="bar-chart-card"></div>
-  <!-- CATEGORY LIST (clickable) -->
+
   <div class="section-title">By Category</div>
   <div class="cat-summary-list" id="cat-summary-list"></div>
+
+  <div class="section-title">Account Breakdown</div>
+  <div class="bar-chart-card" id="acc-chart-card"></div>
+
+  <div class="section-title">By Account</div>
+  <div class="cat-summary-list" id="acc-summary-list"></div>
+
   <div class="section-title">Recent Transactions</div>
   <div class="recent-list" id="recent-list"></div>
 </div>
 
-<!-- CATEGORY DRILL-DOWN PAGE -->
+<!-- CATEGORY DETAIL -->
 <div id="page-category" class="page">
   <div class="header" style="display:flex;align-items:center;gap:12px;">
-    <button onclick="showPage('dashboard')" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--primary);">&#8592;</button>
-    <div>
-      <h1 id="cat-page-title">Category</h1>
-      <p id="cat-page-sub"></p>
-    </div>
+    <button onclick="showPage('dashboard')" class="back-btn">&#8592;</button>
+    <div><h1 id="cat-page-title">Category</h1><p id="cat-page-sub"></p></div>
   </div>
-  <div style="padding:16px 16px 0;">
-    <div class="summary-card" id="cat-page-summary-card"></div>
-  </div>
+  <div style="padding:16px 16px 0;"><div class="summary-card" id="cat-page-summary-card"></div></div>
   <div class="section-title">Transactions</div>
-  <div class="recent-list" id="cat-page-list" style="margin:0 16px;"></div>
+  <div class="recent-list" id="cat-page-list"></div>
 </div>
 
+<!-- ACCOUNT DETAIL -->
+<div id="page-account" class="page">
+  <div class="header" style="display:flex;align-items:center;gap:12px;">
+    <button onclick="showPage('dashboard')" class="back-btn">&#8592;</button>
+    <div><h1 id="acc-page-title">Account</h1><p id="acc-page-sub"></p></div>
+  </div>
+  <div style="padding:16px 16px 0;"><div class="summary-card" id="acc-page-summary-card"></div></div>
+  <div class="section-title">Category Split</div>
+  <div class="bar-chart-card" id="acc-page-cat-chart"></div>
+  <div class="section-title">Transactions</div>
+  <div class="recent-list" id="acc-page-list"></div>
+</div>
+
+<!-- ADD EXPENSE -->
 <div id="page-add" class="page">
   <div class="header"><h1>Add Expense</h1><p>Log a new transaction</p></div>
   <div class="add-form">
@@ -63,17 +80,18 @@
     </div>
     <div class="form-group"><label>Account / Card</label><select id="inp-account"></select></div>
     <div class="form-group">
-      <label>Description <span style="font-weight:400;color:var(--muted);font-size:11px;">(optional)</span></label>
+      <label>Description <span class="opt-label">(optional)</span></label>
       <input type="text" id="inp-desc" placeholder="What did you spend on?"/>
     </div>
     <div class="form-group">
-      <label>Notes <span style="font-weight:400;color:var(--muted);font-size:11px;">(optional)</span></label>
+      <label>Notes <span class="opt-label">(optional)</span></label>
       <textarea id="inp-notes" placeholder="Any extra details..."></textarea>
     </div>
     <button class="btn-primary" onclick="addExpense()">Add Expense</button>
   </div>
 </div>
 
+<!-- CALENDAR -->
 <div id="page-calendar" class="page">
   <div class="header"><h1>Calendar</h1><p>Browse by date</p></div>
   <div class="cal-wrap">
@@ -87,6 +105,7 @@
   </div>
 </div>
 
+<!-- ANALYTICS -->
 <div id="page-analytics" class="page">
   <div class="header"><h1>Analytics</h1><p>Your spending patterns</p></div>
   <div class="analytics-wrap">
@@ -100,6 +119,11 @@
       <div class="donut-svg-wrap" id="donut-svg-wrap"></div>
       <div class="legend-list" id="donut-legend"></div>
     </div>
+    <div class="donut-wrap">
+      <h3>Spending by Account</h3>
+      <div class="donut-svg-wrap" id="donut-acc-svg-wrap"></div>
+      <div class="legend-list" id="donut-acc-legend"></div>
+    </div>
     <div class="trend-card">
       <h3 id="trend-title">Monthly Trend</h3>
       <div class="trend-bars" id="trend-bars"></div>
@@ -107,6 +131,7 @@
   </div>
 </div>
 
+<!-- SETTINGS -->
 <div id="page-settings" class="page">
   <div class="header"><h1>Settings</h1><p>Customise your tracker</p></div>
   <div class="settings-wrap">
@@ -140,6 +165,7 @@
   </div>
 </div>
 
+<!-- BOTTOM NAV -->
 <nav class="nav-bar">
   <button class="nav-btn active" onclick="showPage('dashboard',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
@@ -163,6 +189,7 @@
   </button>
 </nav>
 
+<!-- AUTH MODAL -->
 <div class="modal-overlay" id="auth-modal">
   <div class="modal" style="position:relative;">
     <button class="modal-close" onclick="closeAuthModal()">×</button>
@@ -196,6 +223,7 @@
 <script src="js/ui.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/categoryDetail.js"></script>
+<script src="js/accountDetail.js"></script>
 <script src="js/addExpense.js"></script>
 <script src="js/calendar.js"></script>
 <script src="js/analytics.js"></script>

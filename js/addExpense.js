@@ -8,8 +8,8 @@ function addExpense(){
   const date=document.getElementById('inp-date').value;
   const cat=document.getElementById('inp-cat').value;
   const acc=document.getElementById('inp-account').value;
-  const desc=document.getElementById('inp-desc').value.trim();       // optional
-  const notes=document.getElementById('inp-notes').value.trim();     // optional
+  const desc=document.getElementById('inp-desc').value.trim();
+  const notes=document.getElementById('inp-notes').value.trim();
   if(!amt||amt<=0){showToast('⚠️ Enter a valid amount');return;}
   if(!date){showToast('⚠️ Select a date');return;}
   state.transactions.push({id:Date.now().toString(),amount:amt,description:desc,date,category:cat,account:acc,notes});
