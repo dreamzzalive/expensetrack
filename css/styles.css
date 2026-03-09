@@ -178,3 +178,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .dash-signout-btn{background:none;border:1.5px solid var(--danger);color:var(--danger);border-radius:8px;padding:5px 11px;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;white-space:nowrap;}
 .dash-signout-btn:active{background:var(--danger);color:#fff;}
 .dash-signin-btn{background:var(--primary);border:none;color:#fff;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;}
+
+/* ── RECURRING ── */
+.rec-form-card{background:var(--card);border-radius:var(--r);padding:16px;box-shadow:var(--sh);margin-bottom:6px;}
+.rec-card{background:var(--card);border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:10px;}
+.rec-card-paused{opacity:.6;}
+.rec-btn{flex:1;padding:8px;border-radius:8px;border:none;font-size:12px;font-weight:700;cursor:pointer;}
+.rec-btn-pause{background:#fff3cd;color:#856404;}
+.rec-btn-resume{background:#d1fae5;color:#065f46;}
+.rec-btn-del{background:#fde8e8;color:#f04a4a;}
+.nav-btn{font-size:9px;}

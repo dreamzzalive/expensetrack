@@ -5,6 +5,7 @@ function showApp(){
   document.getElementById('auth-screen').style.display='none';
   document.getElementById('app-wrap').style.display='block';
   renderDashboard(); renderSettings();
+  if(typeof onAppReady==='function') onAppReady();
 }
 function showAuth(){
   document.getElementById('auth-screen').style.display='flex';
