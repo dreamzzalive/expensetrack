@@ -11,6 +11,7 @@ function showPage(name,btn){
   if(name==='calendar') renderCalendar();
   if(name==='analytics') renderAnalytics();
   if(name==='settings') renderSettings();
+  if(name==='budget') renderBudget();
   if(name==='dashboard') renderDashboard();
 }
 function txCard(t,del){
