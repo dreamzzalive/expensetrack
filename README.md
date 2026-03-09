@@ -1,4 +1,3 @@
-
 ```
 expensetrack/
 ├── index.html          Shell: all page HTML, nav bar, auth modal
@@ -19,9 +18,11 @@ expensetrack/
 ```
 
 ## Quick Start
+
 Open index.html in any browser. No build step needed.
 
 ## Enable Cloud Sync
+
 1. Create free Firebase project at console.firebase.google.com
 2. Enable Authentication (Email/Password) and Realtime Database
 3. Paste your web app config into js/config.js

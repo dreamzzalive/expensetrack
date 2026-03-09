@@ -1,8 +1,8 @@
 // const FIREBASE_CONFIG = {
-//   apiKey: "YOUR_API_KEY",
-//   authDomain: "YOUR_PROJECT.firebaseapp.com",
-//   projectId: "YOUR_PROJECT_ID",
-//   databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+//   apiKey:      "YOUR_API_KEY",
+//   authDomain:  "YOUR_PROJECT.firebaseapp.com",
+//   projectId:   "YOUR_PROJECT_ID",
+//   databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com"
 // };
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional

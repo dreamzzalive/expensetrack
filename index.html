@@ -9,6 +9,80 @@
 <body>
 
 <!-- DASHBOARD -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     AUTH SCREEN — shown when user is not logged in
+═══════════════════════════════════════════════════════════ -->
+<div id="auth-screen" style="display:none;min-height:100vh;background:var(--bg);flex-direction:column;align-items:center;justify-content:center;padding:24px;">
+
+  <!-- Logo / Hero -->
+  <div style="text-align:center;margin-bottom:32px;">
+    <div style="width:72px;height:72px;background:linear-gradient(135deg,var(--primary),#8b74f9);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;">💰</div>
+    <h1 style="font-size:26px;font-weight:800;color:var(--text);">ExpenseTrack</h1>
+    <p style="font-size:14px;color:var(--muted);margin-top:6px;">Track smarter. Save better.</p>
+  </div>
+
+  <!-- Tab switcher -->
+  <div class="auth-tabs-wrap">
+    <button class="auth-tab active" data-tab="login"  onclick="switchAuthScreenTab('login')">Sign In</button>
+    <button class="auth-tab"        data-tab="signup" onclick="switchAuthScreenTab('signup')">Create Account</button>
+  </div>
+
+  <!-- SIGN IN PANEL -->
+  <div id="auth-login-panel" class="auth-card">
+    <div class="form-group"><label>Email</label><input type="email" id="as-login-email" placeholder="you@email.com" autocomplete="email"/></div>
+    <div class="form-group"><label>Password</label>
+      <div style="position:relative;">
+        <input type="password" id="as-login-pass" placeholder="••••••••" autocomplete="current-password"/>
+        <button onclick="togglePw('as-login-pass',this)" class="pw-toggle">Show</button>
+      </div>
+    </div>
+    <div class="modal-err" id="as-login-err"></div>
+    <button id="as-login-btn" data-label="Sign In" class="btn-primary" onclick="doLogin()">Sign In</button>
+    <p class="auth-link" onclick="switchAuthScreenTab('reset')">Forgot your password?</p>
+  </div>
+
+  <!-- SIGN UP PANEL -->
+  <div id="auth-signup-panel" class="auth-card" style="display:none;">
+    <div class="form-group"><label>Full Name</label><input type="text" id="as-signup-name" placeholder="Your name" autocomplete="name"/></div>
+    <div class="form-group"><label>Email</label><input type="email" id="as-signup-email" placeholder="you@email.com" autocomplete="email"/></div>
+    <div class="form-group"><label>Password</label>
+      <div style="position:relative;">
+        <input type="password" id="as-signup-pass" placeholder="Min 6 characters" autocomplete="new-password"/>
+        <button onclick="togglePw('as-signup-pass',this)" class="pw-toggle">Show</button>
+      </div>
+    </div>
+    <div class="form-group"><label>Confirm Password</label>
+      <div style="position:relative;">
+        <input type="password" id="as-signup-pass2" placeholder="Repeat password" autocomplete="new-password"/>
+        <button onclick="togglePw('as-signup-pass2',this)" class="pw-toggle">Show</button>
+      </div>
+    </div>
+    <div class="modal-err" id="as-signup-err"></div>
+    <button id="as-signup-btn" data-label="Create Account" class="btn-primary" onclick="doSignup()">Create Account</button>
+    <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:12px;">By signing up you agree to keep your password safe. Data is stored securely in Firebase.</p>
+  </div>
+
+  <!-- RESET PASSWORD PANEL -->
+  <div id="auth-reset-panel" class="auth-card" style="display:none;">
+    <p style="font-size:14px;color:var(--muted);margin-bottom:16px;">Enter your email and we'll send you a password reset link.</p>
+    <div class="form-group"><label>Email</label><input type="email" id="as-reset-email" placeholder="you@email.com"/></div>
+    <div class="modal-err" id="as-reset-err"></div>
+    <div id="as-reset-ok" style="font-size:13px;color:var(--success);margin-bottom:12px;min-height:18px;"></div>
+    <button id="as-reset-btn" data-label="Send Reset Email" class="btn-primary" onclick="doPasswordReset()">Send Reset Email</button>
+    <p class="auth-link" onclick="switchAuthScreenTab('login')">← Back to Sign In</p>
+  </div>
+
+  <!-- Demo mode note -->
+  <p id="auth-demo-note" style="font-size:12px;color:var(--muted);text-align:center;margin-top:20px;display:none;">
+    No Firebase config detected — <strong onclick="bypassAuth()" style="color:var(--primary);cursor:pointer;">continue in demo mode →</strong>
+  </p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MAIN APP WRAPPER
+═══════════════════════════════════════════════════════════ -->
+<div id="app-wrap" style="display:none;">
 <div id="page-dashboard" class="page active">
   <div class="header" style="display:flex;justify-content:space-between;align-items:center;"><div><h1>ExpenseTrack</h1><p id="dash-date"></p></div><button onclick="openTransferModal()" class="transfer-fab">🔄 Transfer</button></div>
   <div id="sync-banner-wrap"></div>
@@ -360,5 +434,6 @@
 <script src="js/settings.js"></script>
 <script src="js/csvHandler.js"></script>
 <script src="js/app.js"></script>
+</div><!-- /app-wrap -->
 </body>
 </html>

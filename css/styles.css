@@ -177,3 +177,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 /* TRANSFER BUTTON */
 .transfer-fab{background:#e0f2fe;color:#0ea5e9;border:none;border-radius:99px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;}
 .transfer-fab:active{opacity:.8;}
+
+/* ── AUTH SCREEN ── */
+#auth-screen{max-width:430px;margin:0 auto;box-sizing:border-box;}
+.auth-tabs-wrap{display:flex;background:var(--card);border-radius:var(--radius-sm);padding:4px;box-shadow:var(--shadow);width:100%;max-width:380px;margin-bottom:16px;}
+.auth-tab{flex:1;text-align:center;padding:11px;font-size:14px;font-weight:600;border-radius:8px;cursor:pointer;color:var(--muted);border:none;background:none;transition:all .2s;}
+.auth-tab.active{background:var(--primary);color:white;}
+.auth-card{background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);width:100%;max-width:380px;}
+.auth-card .form-group{margin-bottom:14px;}
+.auth-card .form-group label{display:block;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
+.auth-card .form-group input{width:100%;padding:13px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:15px;background:var(--bg);color:var(--text);outline:none;transition:border .2s;box-sizing:border-box;}
+.auth-card .form-group input:focus{border-color:var(--primary);background:var(--card);}
+.auth-link{text-align:center;color:var(--primary);font-size:13px;font-weight:600;margin-top:14px;cursor:pointer;}
+.auth-link:hover{text-decoration:underline;}
+.pw-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;padding:0;}
