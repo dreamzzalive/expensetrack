@@ -9,7 +9,7 @@
 // };
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
+const FIREBASE_CONFIG = {
   apiKey: "AIzaSyC5iO4idy-yE0G8KdwQizxZRBOW4FsqJ2g",
   authDomain: "expensetrack-94726.firebaseapp.com",
   databaseURL:
