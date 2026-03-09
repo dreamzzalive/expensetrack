@@ -172,18 +172,24 @@
   <div class="header"><h1>Analytics</h1><p>Your spending patterns</p></div>
   <div class="analytics-wrap">
     <div class="period-tabs">
-      <button class="period-tab active" onclick="setPeriod('month',this)">This Month</button>
-      <button class="period-tab" onclick="setPeriod('year',this)">This Year</button>
+      <button class="period-tab active" onclick="setPeriod('month',this)">Month</button>
+      <button class="period-tab" onclick="setPeriod('year',this)">Year</button>
       <button class="period-tab" onclick="setPeriod('all',this)">All Time</button>
     </div>
+    <!-- Dynamic month/year navigator -->
+    <div id="analytics-nav-wrap"></div>
+    <!-- Donuts -->
     <div class="donut-wrap"><h3>Spending by Category</h3><div class="donut-svg-wrap" id="donut-cat-svg"></div><div class="legend-list" id="donut-cat-leg"></div></div>
     <div class="donut-wrap"><h3>Spending by Account</h3><div class="donut-svg-wrap" id="donut-acc-svg"></div><div class="legend-list" id="donut-acc-leg"></div></div>
     <div class="donut-wrap"><h3>Income by Source</h3><div class="donut-svg-wrap" id="donut-inc-svg"></div><div class="legend-list" id="donut-inc-leg"></div></div>
+    <!-- Trend chart -->
     <div class="trend-card"><h3 id="trend-title">Trend</h3><div class="trend-bars" id="trend-bars"></div><div id="trend-legend" style="display:flex;gap:14px;margin-top:10px;"></div></div>
+    <!-- Category by month (year view only) -->
+    <div id="cat-by-month-wrap" style="display:none;"></div>
   </div>
 </div>
 
-<div id="page-settings" class="page">
+<div id="page-settings"<div id="page-settings" class="page">
   <div class="header"><h1>Settings</h1><p>Customise your tracker</p></div>
   <div class="settings-wrap">
     <div class="settings-section"><div class="settings-section-title">Your Account</div><div id="settings-user-area"></div></div>
