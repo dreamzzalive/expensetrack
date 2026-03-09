@@ -119,22 +119,31 @@ function renderRecurring(){
   }).join('');
 }
 
-function populateRecurringForm(){
+function populateRecurringForm(type){
   const catSel = document.getElementById('rec-cat');
   const accSel = document.getElementById('rec-acc');
   if(!catSel || !accSel) return;
-  // Populate based on current type tab
-  const type = document.getElementById('rec-type-exp') && document.getElementById('rec-type-exp').classList.contains('active') ? 'expense' : 'income';
-  const cats = type==='income' ? (st.incomeCategories||DEFAULT_INCOME_CATEGORIES) : (st.categories||DEFAULT_CATEGORIES);
+  // If type not passed, detect from active tab
+  if(!type){
+    const expBtn = document.getElementById('rec-type-exp');
+    type = (expBtn && expBtn.classList.contains('active')) ? 'expense' : 'income';
+  }
+  const cats = type==='income'
+    ? (st.incomeCategories||DEFAULT_INCOME_CATEGORIES)
+    : (st.categories||DEFAULT_CATEGORIES);
   catSel.innerHTML = cats.map(c=>'<option>'+c+'</option>').join('');
+  // Always populate accounts from configured list
   accSel.innerHTML = (st.accounts||DEFAULT_ACCOUNTS).map(a=>'<option>'+a+'</option>').join('');
-  document.getElementById('rec-start').value = toDateStr(new Date());
+  // Set today as default start date if empty
+  if(!document.getElementById('rec-start').value){
+    document.getElementById('rec-start').value = toDateStr(new Date());
+  }
 }
 
 function switchRecType(type, btn){
   document.querySelectorAll('.rec-type-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  populateRecurringForm();
+  populateRecurringForm(type);
 }
 
 function addRecurring(){
@@ -143,7 +152,8 @@ function addRecurring(){
   const errEl = document.getElementById('rec-err');
   errEl.textContent = '';
   if(!amt || amt<=0){ errEl.textContent='⚠️ Enter a valid amount'; return; }
-  const type  = document.getElementById('rec-type-exp').classList.contains('active') ? 'expense' : 'income';
+  const expBtn = document.getElementById('rec-type-exp');
+  const type   = (expBtn && expBtn.classList.contains('active')) ? 'expense' : 'income';
   const rule  = {
     id:          'r_'+Date.now(),
     type,
