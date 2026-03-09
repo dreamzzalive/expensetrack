@@ -167,3 +167,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 /* ── BUDGET ── */
 .budget-cat-card{background:var(--card);border-radius:var(--r);padding:16px;box-shadow:var(--sh);}
+
+/* ── DASHBOARD USER PILL ── */
+.dash-user-pill{display:flex;align-items:center;gap:10px;background:var(--pl);border-radius:var(--rs);padding:9px 12px;}
+.dash-user-pill.dash-user-demo{justify-content:space-between;background:#fff8e1;}
+.dash-user-avatar{width:34px;height:34px;border-radius:50%;background:var(--primary);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dash-user-info{flex:1;min-width:0;}
+.dash-user-name{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dash-user-email{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dash-signout-btn{background:none;border:1.5px solid var(--danger);color:var(--danger);border-radius:8px;padding:5px 11px;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;white-space:nowrap;}
+.dash-signout-btn:active{background:var(--danger);color:#fff;}
+.dash-signin-btn{background:var(--primary);border:none;color:#fff;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;}

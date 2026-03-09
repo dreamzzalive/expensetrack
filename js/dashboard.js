@@ -9,6 +9,7 @@ function byKey(arr,key){ const r={}; arr.forEach(t=>{ r[t[key]]=(r[t[key]]||0)+t
 function renderDashboard(){
   const now=new Date();
   document.getElementById('dash-date').textContent=now.toLocaleDateString('en-SG',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  renderUserHeader();
   document.getElementById('dash-month-label').textContent=dashMonth.toLocaleDateString('en-SG',{month:'long',year:'numeric'});
   const txs=getMonthTxs(st.transactions,dashMonth);
   const inc=getMonthTxs(st.income,dashMonth);
@@ -47,4 +48,27 @@ function renderDashboard(){
   // sync banner
   const sb=document.getElementById('sync-banner-wrap');
   if(sb){ if(!currentUser&&!FIREBASE_READY) sb.innerHTML='<div class="sync-banner">🔒 Demo mode — data saved locally only</div>'; else sb.innerHTML=''; }
+}
+function renderUserHeader(){
+  const el = document.getElementById('dash-user-pill');
+  if(!el) return;
+  if(currentUser){
+    const initial = (currentUser.displayName || currentUser.email || 'U')[0].toUpperCase();
+    const name    = currentUser.displayName || currentUser.email.split('@')[0];
+    el.innerHTML =
+      '<div class="dash-user-pill">' +
+        '<div class="dash-user-avatar">'+initial+'</div>' +
+        '<div class="dash-user-info">' +
+          '<div class="dash-user-name">'+name+'</div>' +
+          '<div class="dash-user-email">'+currentUser.email+'</div>' +
+        '</div>' +
+        '<button class="dash-signout-btn" onclick="confirmLogout()">Sign Out</button>' +
+      '</div>';
+  } else {
+    el.innerHTML = '<div class="dash-user-pill dash-user-demo"><span>🔒 Demo Mode</span><button class="dash-signin-btn" onclick="showAuth()">Sign In</button></div>';
+  }
+}
+
+function confirmLogout(){
+  if(confirm('Sign out of ExpenseTrack?')) doLogout();
 }

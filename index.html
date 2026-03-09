@@ -63,9 +63,12 @@
 <div id="app-wrap">
 
 <div id="page-dashboard" class="page active">
-  <div class="header" style="display:flex;justify-content:space-between;align-items:center;">
-    <div><h1>ExpenseTrack</h1><p id="dash-date"></p></div>
-    <button class="transfer-fab" onclick="openTransferModal()">🔄 Transfer</button>
+  <div class="header">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div><h1>ExpenseTrack</h1><p id="dash-date"></p></div>
+      <button class="transfer-fab" onclick="openTransferModal()">🔄 Transfer</button>
+    </div>
+    <div id="dash-user-pill"></div>
   </div>
   <div id="sync-banner-wrap"></div>
   <div class="month-nav-row">
