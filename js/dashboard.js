@@ -1,98 +1,50 @@
-let dashMonth=new Date();dashMonth.setDate(1);
-function changeMonth(d){dashMonth.setMonth(dashMonth.getMonth()+d);renderDashboard();}
+// ═══════════════════════════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════════════════════════
+let dashMonth=new Date(); dashMonth.setDate(1);
+function changeMonth(d){ dashMonth.setMonth(dashMonth.getMonth()+d); renderDashboard(); }
+function getMonthTxs(arr,dm){ const y=dm.getFullYear(),m=dm.getMonth(); return (arr||[]).filter(t=>{ const d=new Date(t.date); return d.getFullYear()===y&&d.getMonth()===m; }); }
+function byKey(arr,key){ const r={}; arr.forEach(t=>{ r[t[key]]=(r[t[key]]||0)+t.amount; }); return Object.entries(r).sort((a,b)=>b[1]-a[1]); }
 
 function renderDashboard(){
   const now=new Date();
   document.getElementById('dash-date').textContent=now.toLocaleDateString('en-SG',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   document.getElementById('dash-month-label').textContent=dashMonth.toLocaleDateString('en-SG',{month:'long',year:'numeric'});
-  const txs=getMonthTxs(dashMonth);
-  const incTxs=getMonthIncome(dashMonth);
+  const txs=getMonthTxs(st.transactions,dashMonth);
+  const inc=getMonthTxs(st.income,dashMonth);
   const totalExp=txs.reduce((s,t)=>s+t.amount,0);
-  const totalInc=incTxs.reduce((s,t)=>s+t.amount,0);
+  const totalInc=inc.reduce((s,t)=>s+t.amount,0);
   const net=totalInc-totalExp;
-
-  // Summary cards
   document.getElementById('dash-total-exp').textContent='$'+totalExp.toFixed(2);
   document.getElementById('dash-total-inc').textContent='$'+totalInc.toFixed(2);
-  document.getElementById('dash-net').textContent=(net>=0?'+':'')+' $'+Math.abs(net).toFixed(2);
+  document.getElementById('dash-net').textContent=(net>=0?'+$':'-$')+Math.abs(net).toFixed(2);
   document.getElementById('dash-net').style.color=net>=0?'#10b981':'#f04a4a';
-  document.getElementById('dash-sub').textContent=txs.length+' expense'+(txs.length!==1?'s':'')+' · '+incTxs.length+' income record'+(incTxs.length!==1?'s':'');
-
-  // ── Category bar chart ──
-  const bycat={};txs.forEach(t=>{bycat[t.category]=(bycat[t.category]||0)+t.amount;});
-  const sortedCat=Object.entries(bycat).sort((a,b)=>b[1]-a[1]);
-  const maxCat=sortedCat.length?sortedCat[0][1]:1;
-  const catChartEl=document.getElementById('bar-chart-card');
-  catChartEl.innerHTML=sortedCat.length?sortedCat.map(([cat,amt])=>{
-    const color=COLORS[(state.categories||[]).indexOf(cat)%COLORS.length];
-    return `<div class="bc-row"><div class="bc-label" title="${cat}">${cat}</div><div class="bc-track"><div class="bc-fill" style="width:${(amt/maxCat*100).toFixed(1)}%;background:${color}"></div></div><div class="bc-amt" style="color:${color}">$${amt.toFixed(0)}</div></div>`;
-  }).join(''):'<div class="empty-state" style="padding:20px">No expenses yet</div>';
-
-  // ── Category clickable list ──
-  const catListEl=document.getElementById('cat-summary-list');
-  catListEl.innerHTML=sortedCat.length?sortedCat.map(([cat,amt])=>{
-    const color=COLORS[(state.categories||[]).indexOf(cat)%COLORS.length];
-    const count=txs.filter(t=>t.category===cat).length;
-    return `<div class="cat-bar-item" onclick="openCategoryDetail('${cat}')">
-      <div class="cat-bar-row"><div class="cat-bar-name"><span class="cat-dot" style="background:${color}"></span>${cat}</div>
-      <div style="display:flex;align-items:center;gap:6px;"><div class="cat-bar-amt">$${amt.toFixed(2)}</div><span class="cat-chevron">›</span></div></div>
-      <div class="bar-track"><div class="bar-fill" style="width:${(amt/maxCat*100).toFixed(0)}%;background:${color}"></div></div>
-      <div class="cat-bar-meta">${count} transaction${count!==1?'s':''}</div></div>`;
-  }).join(''):'<div class="empty-state">No expenses this month</div>';
-
-  // ── Account bar chart ──
-  const byacc={};txs.forEach(t=>{byacc[t.account]=(byacc[t.account]||0)+t.amount;});
-  const sortedAcc=Object.entries(byacc).sort((a,b)=>b[1]-a[1]);
-  const maxAcc=sortedAcc.length?sortedAcc[0][1]:1;
-  const accChartEl=document.getElementById('acc-chart-card');
-  accChartEl.innerHTML=sortedAcc.length?sortedAcc.map(([acc,amt])=>{
-    const color=ACC_COLORS[(state.accounts||[]).indexOf(acc)%ACC_COLORS.length];
-    return `<div class="bc-row"><div class="bc-label" title="${acc}">${acc}</div><div class="bc-track"><div class="bc-fill" style="width:${(amt/maxAcc*100).toFixed(1)}%;background:${color}"></div></div><div class="bc-amt" style="color:${color}">$${amt.toFixed(0)}</div></div>`;
-  }).join(''):'<div class="empty-state" style="padding:20px">No data yet</div>';
-
-  // ── Account clickable list ──
-  const accListEl=document.getElementById('acc-summary-list');
-  accListEl.innerHTML=sortedAcc.length?sortedAcc.map(([acc,amt])=>{
-    const color=ACC_COLORS[(state.accounts||[]).indexOf(acc)%ACC_COLORS.length];
-    const count=txs.filter(t=>t.account===acc).length;
-    return `<div class="cat-bar-item" onclick="openAccountDetail('${acc}')">
-      <div class="cat-bar-row"><div class="cat-bar-name"><span class="cat-dot" style="background:${color}"></span>${getAccEmoji(acc)} ${acc}</div>
-      <div style="display:flex;align-items:center;gap:6px;"><div class="cat-bar-amt">$${amt.toFixed(2)}</div><span class="cat-chevron">›</span></div></div>
-      <div class="bar-track"><div class="bar-fill" style="width:${(amt/maxAcc*100).toFixed(0)}%;background:${color}"></div></div>
-      <div class="cat-bar-meta">${count} transaction${count!==1?'s':''}</div></div>`;
-  }).join(''):'<div class="empty-state">No transactions this month</div>';
-
-  // ── Income bar chart ──
-  const byinc={};incTxs.forEach(t=>{byinc[t.category]=(byinc[t.category]||0)+t.amount;});
-  const sortedInc=Object.entries(byinc).sort((a,b)=>b[1]-a[1]);
-  const maxInc=sortedInc.length?sortedInc[0][1]:1;
-  const incChartEl=document.getElementById('inc-chart-card');
-  incChartEl.innerHTML=sortedInc.length?sortedInc.map(([cat,amt])=>{
-    const color=getIncColor(cat);
-    return `<div class="bc-row"><div class="bc-label" title="${cat}">${cat}</div><div class="bc-track"><div class="bc-fill" style="width:${(amt/maxInc*100).toFixed(1)}%;background:${color}"></div></div><div class="bc-amt" style="color:${color}">$${amt.toFixed(0)}</div></div>`;
-  }).join(''):'<div class="empty-state" style="padding:20px">No income yet</div>';
-
-  // ── Income clickable list ──
-  const incListEl=document.getElementById('inc-summary-list');
-  incListEl.innerHTML=sortedInc.length?sortedInc.map(([cat,amt])=>{
-    const color=getIncColor(cat);
-    const count=incTxs.filter(t=>t.category===cat).length;
-    return `<div class="cat-bar-item" onclick="openIncomeDetail('${cat}')">
-      <div class="cat-bar-row"><div class="cat-bar-name"><span class="cat-dot" style="background:${color}"></span>${getIncEmoji(cat)} ${cat}</div>
-      <div style="display:flex;align-items:center;gap:6px;"><div class="inc-bar-amt" style="color:${color}">$${amt.toFixed(2)}</div><span class="cat-chevron">›</span></div></div>
-      <div class="bar-track"><div class="bar-fill" style="width:${(amt/maxInc*100).toFixed(0)}%;background:${color}"></div></div>
-      <div class="cat-bar-meta">${count} record${count!==1?'s':''}</div></div>`;
-  }).join(''):'<div class="empty-state">No income this month</div>';
-
-  // ── Recent ──
-  const allRecent=[
-    ...state.transactions.map(t=>({...t,_type:'expense'})),
-    ...(state.income||[]).map(t=>({...t,_type:'income'}))
-  ].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,6);
-  document.getElementById('recent-list').innerHTML=allRecent.length
-    ?allRecent.map(t=>t._type==='income'?incomeCard(t,true):txCard(t,true)).join('')
-    :'<div class="empty-state">No transactions yet</div>';
+  document.getElementById('dash-sub').textContent=txs.length+' expense'+(txs.length!==1?'s':'')+' · '+inc.length+' income record'+(inc.length!==1?'s':'');
+  // category bar + list
+  const catE=byKey(txs,'category'); const maxCat=catE.length?catE[0][1]:1;
+  barChart(document.getElementById('bar-chart-card'),catE,getCatColor);
+  document.getElementById('cat-summary-list').innerHTML=catE.map(([k,v])=>{
+    const c=getCatColor(k),cnt=txs.filter(t=>t.category===k).length;
+    return '<div class="cat-bar-item" onclick="openCatDetail(\''+k+'\')"><div class="cat-bar-row"><div class="cat-bar-name"><span class="cat-dot" style="background:'+c+'"></span>'+k+'</div><div style="display:flex;align-items:center;gap:6px;"><span style="font-weight:700">$'+v.toFixed(2)+'</span><span class="cat-chevron">›</span></div></div><div class="bar-track"><div class="bar-fill" style="width:'+((v/maxCat)*100).toFixed(0)+'%;background:'+c+'"></div></div><div class="cat-bar-meta">'+cnt+' transaction'+(cnt!==1?'s':'')+'</div></div>';
+  }).join('')||'<div class="empty-state">No expenses this month</div>';
+  // account bar + list
+  const accE=byKey(txs,'account'); const maxAcc=accE.length?accE[0][1]:1;
+  barChart(document.getElementById('acc-chart-card'),accE,getAccColor);
+  document.getElementById('acc-summary-list').innerHTML=accE.map(([k,v])=>{
+    const c=getAccColor(k),cnt=txs.filter(t=>t.account===k).length;
+    return '<div class="cat-bar-item" onclick="openAccDetail(\''+k+'\')"><div class="cat-bar-row"><div class="cat-bar-name"><span class="cat-dot" style="background:'+c+'"></span>'+getAccEmoji(k)+' '+k+'</div><div style="display:flex;align-items:center;gap:6px;"><span style="font-weight:700">$'+v.toFixed(2)+'</span><span class="cat-chevron">›</span></div></div><div class="bar-track"><div class="bar-fill" style="width:'+((v/maxAcc)*100).toFixed(0)+'%;background:'+c+'"></div></div><div class="cat-bar-meta">'+cnt+' transaction'+(cnt!==1?'s':'')+'</div></div>';
+  }).join('')||'<div class="empty-state">No account data this month</div>';
+  // income bar + list
+  const incE=byKey(inc,'category'); const maxInc=incE.length?incE[0][1]:1;
+  barChart(document.getElementById('inc-chart-card'),incE,getIncColor);
+  document.getElementById('inc-summary-list').innerHTML=incE.map(([k,v])=>{
+    const c=getIncColor(k),cnt=inc.filter(t=>t.category===k).length;
+    return '<div class="cat-bar-item" onclick="openIncDetail(\''+k+'\')"><div class="cat-bar-row"><div class="cat-bar-name"><span class="cat-dot" style="background:'+c+'"></span>'+getIncEmoji(k)+' '+k+'</div><div style="display:flex;align-items:center;gap:6px;"><span style="font-weight:700;color:'+c+'">$'+v.toFixed(2)+'</span><span class="cat-chevron">›</span></div></div><div class="bar-track"><div class="bar-fill" style="width:'+((v/maxInc)*100).toFixed(0)+'%;background:'+c+'"></div></div><div class="cat-bar-meta">'+cnt+' record'+(cnt!==1?'s':'')+'</div></div>';
+  }).join('')||'<div class="empty-state">No income this month</div>';
+  // recent
+  const all=[...st.transactions.map(t=>({...t,_t:'e'})),...(st.income||[]).map(t=>({...t,_t:'i'}))].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,6);
+  document.getElementById('recent-list').innerHTML=all.map(t=>t._t==='i'?incCard(t,true):txCard(t,true)).join('')||'<div class="empty-state">No transactions yet</div>';
+  // sync banner
+  const sb=document.getElementById('sync-banner-wrap');
+  if(sb){ if(!currentUser&&!FIREBASE_READY) sb.innerHTML='<div class="sync-banner">🔒 Demo mode — data saved locally only</div>'; else sb.innerHTML=''; }
 }
-
-function getMonthTxs(d){const y=d.getFullYear(),m=d.getMonth();return state.transactions.filter(t=>{const td=new Date(t.date);return td.getFullYear()===y&&td.getMonth()===m;});}
-function getMonthIncome(d){const y=d.getFullYear(),m=d.getMonth();return(state.income||[]).filter(t=>{const td=new Date(t.date);return td.getFullYear()===y&&td.getMonth()===m;});}
