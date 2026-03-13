@@ -7,7 +7,7 @@ function initRecurring(){
   if(!st.recurring) st.recurring = [];
 }
 
-function processRecurring(){
+async function processRecurring(){
   initRecurring();
   const today = new Date(); today.setHours(0,0,0,0);
   let added = 0;
@@ -38,7 +38,8 @@ function processRecurring(){
     }
   });
   if(added > 0){
-    save();
+    saveLocal();
+    await saveCloud();
     showToast('🔁 ' + added + ' recurring transaction' + (added > 1 ? 's' : '') + ' added');
     if(typeof renderDashboard === 'function') renderDashboard();
     if(typeof renderCalendar  === 'function') renderCalendar();
