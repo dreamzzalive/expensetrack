@@ -37,7 +37,12 @@ function processRecurring(){
       next = advanceDate(next, rule.frequency);
     }
   });
-  if(added > 0){ save(); showToast('🔁 ' + added + ' recurring transaction' + (added > 1 ? 's' : '') + ' added'); }
+  if(added > 0){
+    save();
+    showToast('🔁 ' + added + ' recurring transaction' + (added > 1 ? 's' : '') + ' added');
+    if(typeof renderDashboard === 'function') renderDashboard();
+    if(typeof renderCalendar  === 'function') renderCalendar();
+  }
 }
 
 function toDateStr(d){
@@ -194,9 +199,10 @@ function addRecurring(){
   save();
   document.getElementById('rec-amount').value = '';
   document.getElementById('rec-desc').value   = '';
-  processRecurring();
+  processRecurring();  // adds txs to st + calls renderDashboard/renderCalendar if any added
   renderRecurring();
-  renderDashboard();
+  renderDashboard();    // always refresh dashboard regardless
+  if(typeof renderCalendar === 'function') renderCalendar();
   showToast('✅ Recurring rule added');
 }
 

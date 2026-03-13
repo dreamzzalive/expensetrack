@@ -4,7 +4,8 @@
 function showApp(){
   document.getElementById('auth-screen').style.display='none';
   document.getElementById('app-wrap').style.display='block';
-  renderDashboard(); renderSettings();
+  renderDashboard();
+  renderSettings();
   if(typeof onAppReady==='function') onAppReady();
 }
 function showAuth(){

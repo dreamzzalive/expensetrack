@@ -5,9 +5,11 @@ window.addEventListener('DOMContentLoaded', function(){
   initFirebase();
 });
 
-// Process recurring daily
 function onAppReady(){
+  // Process any overdue recurring transactions on load
   processRecurring();
-  // Re-check every hour
-  setInterval(processRecurring, 60*60*1000);
+  // Re-check every hour while app is open
+  setInterval(function(){
+    processRecurring();
+  }, 60 * 60 * 1000);
 }
