@@ -45,7 +45,7 @@ function deleteTr(id){
   st.transfers = (st.transfers||[]).filter(t=>t.id!==id);
   save(); renderDashboard();
   if(tx && document.getElementById('page-account').classList.contains('active')){
-    openAccDetail(tx.from || tx.to);
+    _renderAccDetail();
   }
   showToast('Deleted');
 }
@@ -55,11 +55,11 @@ function refreshActiveDetailPage(tx, type){
   const accPage = document.getElementById('page-account');
   const incPage = document.getElementById('page-income');
   if(type === 'expense'){
-    if(catPage && catPage.classList.contains('active')) openCatDetail(tx.category);
-    else if(accPage && accPage.classList.contains('active')) openAccDetail(tx.account);
+    if(catPage && catPage.classList.contains('active')){ detailCurrentCat=tx.category; _renderCatDetail(); }
+    else if(accPage && accPage.classList.contains('active')){ detailCurrentAcc=tx.account; _renderAccDetail(); }
   } else if(type === 'income'){
-    if(incPage && incPage.classList.contains('active')) openIncDetail(tx.category);
-    else if(accPage && accPage.classList.contains('active')) openAccDetail(tx.account);
+    if(incPage && incPage.classList.contains('active')){ detailCurrentInc=tx.category; _renderIncDetail(); }
+    else if(accPage && accPage.classList.contains('active')){ detailCurrentAcc=tx.account; _renderAccDetail(); }
   }
 }
 function barChart(el,entries,colorFn){
