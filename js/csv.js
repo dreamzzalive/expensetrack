@@ -122,9 +122,30 @@ function showCSVPreview(rows, errors){
 /* ── Step 3: User confirms — actually import ── */
 function confirmCSVImport(){
   let imp = 0;
-  const accs = st.accounts || DEFAULT_ACCOUNTS;
-  const cats = st.categories || DEFAULT_CATEGORIES;
-  const incCats = st.incomeCategories || DEFAULT_INCOME_CATEGORIES;
+
+  // ── Auto-create missing categories & accounts from CSV ──────────────
+  if(!st.categories)       st.categories = [...DEFAULT_CATEGORIES];
+  if(!st.accounts)         st.accounts   = [...DEFAULT_ACCOUNTS];
+  if(!st.incomeCategories) st.incomeCategories = [...DEFAULT_INCOME_CATEGORIES];
+
+  csvStagedRows.forEach(function(r){
+    if(r.type === 'expense' && r.cat && !st.categories.includes(r.cat)){
+      st.categories.push(r.cat);
+    }
+    if(r.type === 'income' && r.cat && !st.incomeCategories.includes(r.cat)){
+      st.incomeCategories.push(r.cat);
+    }
+    if(r.acc && !st.accounts.includes(r.acc)){
+      st.accounts.push(r.acc);
+    }
+    if(r.toAcc && !st.accounts.includes(r.toAcc)){
+      st.accounts.push(r.toAcc);
+    }
+  });
+
+  const accs    = st.accounts;
+  const cats    = st.categories;
+  const incCats = st.incomeCategories;
 
   csvStagedRows.forEach(function(r){
     if(r.type === 'transfer'){
@@ -168,11 +189,23 @@ function confirmCSVImport(){
 
   save();
   renderDashboard();
+  renderSettings();
   if(typeof renderCalendar === 'function') renderCalendar();
-  csvStagedRows = [];
 
+  const addedCats = st.categories.filter(function(c){ return !DEFAULT_CATEGORIES.includes(c); });
+  const addedAccs = st.accounts.filter(function(a){ return !DEFAULT_ACCOUNTS.includes(a); });
+  const addedIncCats = st.incomeCategories.filter(function(c){ return !DEFAULT_INCOME_CATEGORIES.includes(c); });
+  let extraNote = '';
+  if(addedCats.length)    extraNote += '<div style="margin-top:6px;font-size:12px;">📁 New expense categories added: <strong>'+addedCats.join(', ')+'</strong></div>';
+  if(addedIncCats.length) extraNote += '<div style="margin-top:4px;font-size:12px;">📁 New income categories added: <strong>'+addedIncCats.join(', ')+'</strong></div>';
+  if(addedAccs.length)    extraNote += '<div style="margin-top:4px;font-size:12px;">🏦 New accounts added: <strong>'+addedAccs.join(', ')+'</strong></div>';
+
+  csvStagedRows = [];
   document.getElementById('csv-status').innerHTML =
-    '<div style="background:#d1fae5;color:#065f46;border-radius:var(--rs);padding:12px;font-weight:700;font-size:14px;">✅ Successfully imported '+imp+' rows</div>';
+    '<div style="background:#d1fae5;color:#065f46;border-radius:var(--rs);padding:14px;font-size:14px;">' +
+      '<div style="font-weight:700;margin-bottom:4px;">✅ Successfully imported '+imp+' rows</div>' +
+      extraNote +
+    '</div>';
   showToast('✅ Imported '+imp+' records');
 }
 
